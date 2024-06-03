@@ -19,16 +19,16 @@ echo -e "\n
 # This script will install Odoo on your Ubuntu server. It can install multiple Odoo instances
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
-# sudo adduser alus
-# Name: Odoo 17.0 ALUS installation User
-# sudo usermod -aG sudo alus
-# sudo su alus
+# sudo adduser slm
+# Name: Odoo 17.0 slm installation User
+# sudo usermod -aG sudo slm
+# sudo su slm
 # cd
-# sudo nano alus_install.sh
+# sudo nano slm_install.sh
 # Place this content in it and then make the file executable:
-# sudo chmod +x alus_install.sh
+# sudo chmod +x slm_install.sh
 # Execute the script to install Odoo 17.0:
-# ./alus_install.sh
+# ./slm_install.sh
 ################################################################################
 
 # Create PostgreSQL user for Odoo
@@ -36,25 +36,25 @@ sudo -u postgres createuser -d -R -S $USER
 sudo service postgresql restart
 
 # Create Odoo directory
-sudo mkdir /opt/odoo17/alus
-sudo chmod +x /opt/odoo17/alus
-sudo chown $USER:$USER /opt/odoo17/alus
+sudo mkdir /opt/odoo17/slm
+sudo chmod +x /opt/odoo17/slm
+sudo chown $USER:$USER /opt/odoo17/slm
 
 # Clone Odoo repository
-git clone https://www.github.com/odoo/odoo --branch 17.0 --depth 1 /opt/odoo17/alus/odoo
+git clone https://www.github.com/odoo/odoo --branch 17.0 --depth 1 /opt/odoo17/slm/odoo
 
 # Change Odoo Directory Own and Conf:
-sudo chmod +x /opt/odoo17/alus/odoo
-sudo chown $USER:$USER /opt/odoo17/alus/odoo
+sudo chmod +x /opt/odoo17/slm/odoo
+sudo chown $USER:$USER /opt/odoo17/slm/odoo
 
 # Create Python virtual environment in Odoo directory
-python3.10 -m venv /opt/odoo17/alus/odoo/venv
+python3.10 -m venv /opt/odoo17/slm/odoo/venv
 
 # Activate the virtual environment
-source /opt/odoo17/alus/odoo/venv/bin/activate
+source /opt/odoo17/slm/odoo/venv/bin/activate
 
 # Install required Python packages for Odoo
-# pip install -r /opt/odoo17/alus/odoo/requirements.txt
+# pip install -r /opt/odoo17/slm/odoo/requirements.txt
 
 sudo apt install python3-pip
 sudo apt install python3-pip --reinstall
@@ -109,25 +109,27 @@ pip install \
 deactivate
 
 # Create Odoo configuration file
-sudo tee /etc/alus.conf > /dev/null <<EOF
+sudo tee /etc/slm.conf > /dev/null <<EOF
 [options]
 ; This is the password that allows database operations:
 ; admin_passwd = 123456
 db_host = False
 db_port = False
-; db_user = alus
+; db_user = slm
 db_password = False
-addons_path = /opt/odoo17/alus/odoo/addons, /opt/odoo17/addons
-logfile = /var/log/odoo17/alus.log
-xmlrpc_port = 8087
+addons_path = /opt/odoo17/slm/odoo/addons, /opt/odoo17/addons
+logfile = /var/log/odoo17/slm.log
+xmlrpc_port = 8088
+worker = 4
+proxy_mode = True
 EOF
 
 # Change Conf File Own and Conf:
-sudo chmod +x /etc/alus.conf
-sudo chown $USER:$USER /etc/alus.conf
+sudo chmod +x /etc/slm.conf
+sudo chown $USER:$USER /etc/slm.conf
 
 # Create systemd service file for Odoo
-sudo tee /etc/systemd/system/alus.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/slm.service > /dev/null <<EOF
 [Unit]
 Description=Odoo 17.0
 Documentation=https://www.odoo.com
@@ -135,24 +137,26 @@ Documentation=https://www.odoo.com
 # Ubuntu/Debian convention:
 Type=simple
 User=$USER
-ExecStart=/opt/odoo17/alus/odoo/venv/bin/python3 /opt/odoo17/alus/odoo/odoo-bin -c /etc/alus.conf -l /var/log/odoo17/alus.log
+ExecStart=/opt/odoo17/slm/odoo/venv/bin/python3 /opt/odoo17/slm/odoo/odoo-bin -c /etc/slm.conf -l /var/log/odoo17/slm.log
 [Install]
 WantedBy=default.target
 EOF
 
 # Change Service File Own and Conf:
-sudo chmod +x /etc/systemd/system/alus.service
-sudo chown $USER:$USER /etc/systemd/system/alus.service
+sudo chmod +x /etc/systemd/system/slm.service
+sudo chown $USER:$USER /etc/systemd/system/slm.service
 
 # Start and enable Odoo service
 sudo systemctl daemon-reload
-sudo systemctl start alus.service
-sudo systemctl enable alus.service
-sudo systemctl restart alus.service
-sudo service alus restart
+sudo systemctl start slm.service
+sudo systemctl enable slm.service
+sudo systemctl restart slm.service
+sudo service slm restart
 
 # Allow HTTP and HTTPS traffic through the firewall
 #sudo ufw allow http
 #sudo ufw allow https
 
-echo "Odoo 17 installation for ALUS is complete. You can access it at http://your_server_ip:8087"
+echo "Odoo 17 installation for slm is complete. You can access it at http://your_server_ip:8087"
+echo "Do Not Forget to Add Certbot Certificate using command: /source odoo_env/bin/activate & sudo certbot"
+echo "Do Not Forget to Activate Firewall using command: sudo ufw allow 'Nginx Full' & sudo ufw delete allow 'Nginx HTTP'"

@@ -1,0 +1,8 @@
+- sign
+- industry_fsm
+- industry_fsm_stock
+- sale_project_forecast
+- documents
+- knowledge
+- crm_enterprise
+- helpdesk
