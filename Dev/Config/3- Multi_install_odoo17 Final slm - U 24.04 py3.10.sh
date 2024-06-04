@@ -32,10 +32,14 @@ echo -e "\n
 ################################################################################
 
 # Create PostgreSQL user for Odoo
+sudo service slm stop
+sudo -u postgres psql -c "drop database newdb;"
+sudo -u postgres psql -c "drop role slm;"
 sudo -u postgres createuser -d -R -S $USER
 sudo service postgresql restart
 
 # Create Odoo directory
+sudo rm -rf /opt/odoo17/slm
 sudo mkdir /opt/odoo17/slm
 sudo chmod +x /opt/odoo17/slm
 sudo chown $USER:$USER /opt/odoo17/slm
@@ -109,6 +113,8 @@ pip install \
 deactivate
 
 # Create Odoo configuration file
+sudo rm -rf /var/log/odoo17/slm.log
+sudo rm -rf /etc/slm.conf
 sudo tee /etc/slm.conf > /dev/null <<EOF
 [options]
 ; This is the password that allows database operations:
@@ -120,7 +126,7 @@ db_password = False
 addons_path = /opt/odoo17/slm/odoo/addons, /opt/odoo17/addons
 logfile = /var/log/odoo17/slm.log
 xmlrpc_port = 8088
-worker = 4
+worker = 3
 proxy_mode = True
 EOF
 
@@ -129,6 +135,7 @@ sudo chmod +x /etc/slm.conf
 sudo chown $USER:$USER /etc/slm.conf
 
 # Create systemd service file for Odoo
+sudo rm -rf /etc/systemd/system/slm.service
 sudo tee /etc/systemd/system/slm.service > /dev/null <<EOF
 [Unit]
 Description=Odoo 17.0
@@ -156,11 +163,7 @@ sudo service slm restart
 # Allow HTTP and HTTPS traffic through the firewall
 #sudo ufw allow http
 #sudo ufw allow https
-
-echo "Odoo 17 installation for slm is complete. You can access it at http://your_server_ip:8087"
-echo "Do Not Forget to Add Certbot Certificate using command: /source odoo_env/bin/activate & sudo certbot"
-echo "Do Not Forget to Activate Firewall using command: sudo ufw allow 'Nginx Full' & sudo ufw delete allow 'Nginx HTTP'"
-=======
-echo "Odoo 17 installation for ALUS is complete. You can access it at http://your_server_ip:8087"
-echo "Do Not Forget to Add Certbot Certificate using command: sudo certbot"
-echo "Do Not Forget to Activate Firewall using command: sudo ufw allow 'Nginx Full' & sudo ufw delete allow 'Nginx HTTP'"
+echo "==========================================================================================================="
+echo "	Odoo 17 installation for slm is complete. You can access it at http://your_server_ip:8088"
+echo "	Do Not Forget to Add Certbot Certificate using command: /source odoo_env/bin/activate & sudo certbot"
+echo "	Do Not Forget to Activate Firewall using command: sudo ufw allow 'Nginx Full' & sudo ufw delete allow 'Nginx HTTP'"
