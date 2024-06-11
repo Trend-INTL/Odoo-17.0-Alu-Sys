@@ -1,0 +1,134 @@
+1- Add the Following Records to your Domain Name Server DNS
+
+To ADD SUBDOMAINS:
+	Type	Name			Priority			Content/IP			TTL
+	MX	@			10				mail.trend-ai.net		200	No Need
+	A	mail			0				195.35.28.250			200	No Need
+---------------------------------------------------------------------------------------------------------------------
+
+sudo apt get update
+sudo apt get upgrade
+
+sudo mkdir modoboa
+sudo chown trend:trend modoboa
+sudo chmod +x modoboa
+ls -la
+cd modoboa
+
+/  $ git clone https://github.com/modoboa/modoboa-installer
+/  $ cd modoboa-installer
+/  $ sudo python3 run.py trend-ai.net
+
+/ apt-get install python3-virtualenv python3-pip git curl gnupg2
+
+/sudo apt get install -y git python3-vertualenv python3-pip
+git clone https://github.com/modoboa/modoboa-installer.git	==>>> Download mondoboa mail server from github
+cd modoboa-installer
+
+sudo ./run.py --stop-after-configfile-check trend-ai.net =>> Create a Configuration file for mondoboa
+sudo chown trend:trend installer.cfg 
+sudo chmod +x installer.cfg
+sudo nano installer.cfg		=>> Change Configurations
+
+-------------------------------------------------------------------------
+"
+[general]
+hostname = mail.%(domain)s
+
+[certificate]
+type = letsencrypt
+tls_cert_file_path =
+tls_key_file_path =
+
+[letsencrypt]
+email = admin@trend-ai.net
+
+[database]
+engine = postgres
+host = 127.0.0.1
+install = true
+
+[postgres]
+user = postgres =>>> trend
+password = 	=>>> trend123
+"
+-----------------------------------------------------------------------------
+
+sudo nano /etc/nginx/sites-enabled/default
+=========================================
+server {
+        listen 443 default_server;
+        listen [::]:443 default_server;
+        listen 80 default_server;
+        listen [::]:80 default_server;
+==========================================
+sudo service nginx reload
+
+sudo nano README.rst
+
+
+python3.10 -m venv modoboa_env
+source modoboa_env/bin/activate
+
+pip install --upgrade pip
+
+sudo ./run.py --interactive mail.trend-ai.net
+IF ERROR : sudo ./run.py --interactive mail.trend-ai.net --debug
+run sudo --configure -a
+sudo ./run.py --version=1.8.1 trend-ai.net
+sudo ./run.py --version=1.8.1 trend-ai.net --debug
+
+
+
+# Install Python dependencies with resolved versions
+pip install \
+    Babel==2.9.1 \
+    chardet==4.0.0 \
+    cryptography==3.4.8 \
+    decorator==4.4.2 \
+    docutils==0.17 \
+    ebaysdk==2.1.5 \
+    freezegun==1.1.0 \
+    geoip2==2.9.0 \
+    gevent==22.10.2 \
+    greenlet==2.0.2 \
+    idna==2.10 \
+    libsass==0.20.1 \
+    lxml==5.2.1 \
+    lxml_html_clean \
+    Jinja2 \
+    MarkupSafe==2.1.2 \
+    num2words==0.5.10 \
+    ofxparse==0.21 \
+    passlib==1.7.4 \
+    Pillow==9.4.0 \
+    polib==1.1.1 \
+    psutil==5.9.4 \
+    psycopg2-binary \
+    pydot==1.4.2 \
+    pyopenssl==21.0.0 \
+    PyPDF2 \
+    pyserial==3.5 \
+    python-dateutil==2.8.1 \
+    python3-ldap \
+    python-stdnum==1.17 \
+    pyusb==1.2.1 \
+    qrcode==7.3.1 \
+    reportlab==3.6.12 \
+    requests==2.25.1 \
+    rjsmin==1.1.0 \
+    urllib3==1.26.5 \
+    vobject==0.9.6.1 \
+    Werkzeug==2.0.2 \
+    xlrd==1.2.0 \
+    XlsxWriter==3.0.2 \
+    xlwt==1.3.* \
+    zeep==4.1.0
+
+pip install wheel --no-cache-dir
+
+# Deactivate the virtual environment
+deactivate
+
+
+pip install --upgrade modoboa
