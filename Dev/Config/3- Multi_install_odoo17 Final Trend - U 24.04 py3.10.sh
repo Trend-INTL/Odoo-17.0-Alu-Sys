@@ -108,7 +108,27 @@ pip install \
     xlrd==1.2.0 \
     XlsxWriter==3.0.2 \
     xlwt==1.3.* \
-    zeep==4.1.0
+    zeep==4.1.0 \
+    html2text \
+    boto3
+
+# To Install Whatsapp you have to install html2text
+pip install html2text
+
+# Before installing this module, you need to install librariesboto3 :
+pip3 install boto3
+
+# Before installing this module auto_database_backup, you need to install dropbox:
+# This module uses an external python dependency 'dropbox'. Before installing the module install the python package first. The required python package can be installed using the following command,
+pip install dropbox
+# This module uses an external python dependency 'nextcloud'. Before installing the module install the python package first. The required python package can be installed using the following command,
+pip install pyncclient
+# This module uses an external python dependency 'nextcloud-api-wrapper'. Before installing the module install the python package first. The required python package can be installed using the following command,
+pip install nextcloud-api-wrapper
+# This module uses an external python dependency 'Boto3'. Before installing the module install the python package first. The required python package can be installed using the following command,
+pip install boto3
+# This module uses an external python dependency 'paramiko'. Before installing the module install the python package first. The required python package can be installed using the following command,
+pip install paramiko
 
 # Deactivate the virtual environment
 deactivate

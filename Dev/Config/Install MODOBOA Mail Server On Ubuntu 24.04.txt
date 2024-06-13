@@ -5,28 +5,63 @@ To ADD SUBDOMAINS:
 	MX	@			10				mail.trend-ai.net		200	No Need
 	A	mail			0				195.35.28.250			200	No Need
 ---------------------------------------------------------------------------------------------------------------------
+import distutils.cmd
 
-sudo apt get update
-sudo apt get upgrade
+/sudo apt install software-properties-common
+/sudo add-apt-repository ppa:deadsnakes/ppa
+# sudo nano /usr/bin/add-apt-repository
+/sudo apt install python3.8
+sudo wget https://www.python.org/ftp/python/3.8.2/Python-3.8.2rc2.tgz
+cd Python-3.8.2rc2
+sudo ./configure --enable-optimizations
+sudo make install
 
-sudo mkdir modoboa
-sudo chown trend:trend modoboa
-sudo chmod +x modoboa
-ls -la
-cd modoboa
 
-/  $ git clone https://github.com/modoboa/modoboa-installer
+# sudo apt list | grep python3.8
+# sudo apt-get install python3.8
+# sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 2
+# sudo update-alternatives --config python3
+# python3 --version
+# sudo apt remove python3-pip
+sudo apt install python3-pip
+# sudo apt install python3-pip --reinstall
+# pip install --upgrade pip 
+pip --version
+# sudo cp apt_pkg.cpython-38-x86_64-linux-gnu.so apt_pkg.so
+# sudo nano /usr/bin/add-apt-repository
+# Change the first line to ==>>> #!/usr/bin/python3.8
+
+
+sudo apt update
+sudo apt upgrade
+
+cd /etc/nginx/sites-enabled
+sudo nano default
+/sudo nano nginx.conf
+
+/sudo mkdir modoboa
+/sudo chown trend:trend modoboa
+/sudo chmod +x modoboa
+/ls -la
+/cd modoboa
+
+/  $ git clone https://github.com/modoboa/modoboa.git --branch 1.8.x --depth 1
+/  $ git clone https://github.com/modoboa/modoboa-installer  --branch 17.0 --depth 1
 /  $ cd modoboa-installer
 /  $ sudo python3 run.py trend-ai.net
-
-/ apt-get install python3-virtualenv python3-pip git curl gnupg2
+/  $ git clone https://github.com/Mailu/Mailu.git
+/ sudo apt-get install python3-virtualenv python3-pip git curl gnupg2
 
 /sudo apt get install -y git python3-vertualenv python3-pip
 git clone https://github.com/modoboa/modoboa-installer.git	==>>> Download mondoboa mail server from github
 cd modoboa-installer
 
+/python3.8 -m venv modoboa_env
+/source modoboa_env/bin/activate
+
+/sudo ./run.py --stop-after-configfile-check mail.trend-ai.net =>> Create a Configuration file for mondoboa
 sudo ./run.py --stop-after-configfile-check trend-ai.net =>> Create a Configuration file for mondoboa
-sudo chown trend:trend installer.cfg 
+sudo chown trend:trend installer.cfg
 sudo chmod +x installer.cfg
 sudo nano installer.cfg		=>> Change Configurations
 
@@ -54,7 +89,7 @@ password = 	=>>> trend123
 "
 -----------------------------------------------------------------------------
 
-sudo nano /etc/nginx/sites-enabled/default
+/sudo nano /etc/nginx/sites-enabled/default
 =========================================
 server {
         listen 443 default_server;
@@ -62,73 +97,58 @@ server {
         listen 80 default_server;
         listen [::]:80 default_server;
 ==========================================
-sudo service nginx reload
+/sudo service nginx reload
 
-sudo nano README.rst
+/sudo nano README.rst
+
+/python3.10 -m venv modoboa_env
+/source modoboa_env/bin/activate
+
+/cd /srv
+/sudo mkdir /srv/modoboa
+/sudo chown trend:trend /srv/modoboa
+/sudo chmod +X /srv/modoboa
+-------------------------------------
+/python3 -m venv /srv/modoboa/env
+/source /srv/modoboa/env/bin/activate
+/cd /srv/modoboa/env/Scripts/activate
+/python -m ensurepip
+/pip --version
+/pip install --upgrade pip
+pip install --upgrade pip setuptools
+pip install --no-binary :all: django-xforwardedfor-middleware progressbar33 rrdtool sgmllib3k
 
 
-python3.10 -m venv modoboa_env
-source modoboa_env/bin/activate
+/sudo -H pip install modoboa
 
-pip install --upgrade pip
 
-sudo ./run.py --interactive mail.trend-ai.net
-IF ERROR : sudo ./run.py --interactive mail.trend-ai.net --debug
+sudo ./run.py trend-ai.net
+
+sudo ./run.py --interactive trend-ai.net
+IF ERROR : sudo ./run.py --interactive trend-ai.net --debug
 run sudo --configure -a
 sudo ./run.py --version=1.8.1 trend-ai.net
 sudo ./run.py --version=1.8.1 trend-ai.net --debug
-
-
-
-# Install Python dependencies with resolved versions
-pip install \
-    Babel==2.9.1 \
-    chardet==4.0.0 \
-    cryptography==3.4.8 \
-    decorator==4.4.2 \
-    docutils==0.17 \
-    ebaysdk==2.1.5 \
-    freezegun==1.1.0 \
-    geoip2==2.9.0 \
-    gevent==22.10.2 \
-    greenlet==2.0.2 \
-    idna==2.10 \
-    libsass==0.20.1 \
-    lxml==5.2.1 \
-    lxml_html_clean \
-    Jinja2 \
-    MarkupSafe==2.1.2 \
-    num2words==0.5.10 \
-    ofxparse==0.21 \
-    passlib==1.7.4 \
-    Pillow==9.4.0 \
-    polib==1.1.1 \
-    psutil==5.9.4 \
-    psycopg2-binary \
-    pydot==1.4.2 \
-    pyopenssl==21.0.0 \
-    PyPDF2 \
-    pyserial==3.5 \
-    python-dateutil==2.8.1 \
-    python3-ldap \
-    python-stdnum==1.17 \
-    pyusb==1.2.1 \
-    qrcode==7.3.1 \
-    reportlab==3.6.12 \
-    requests==2.25.1 \
-    rjsmin==1.1.0 \
-    urllib3==1.26.5 \
-    vobject==0.9.6.1 \
-    Werkzeug==2.0.2 \
-    xlrd==1.2.0 \
-    XlsxWriter==3.0.2 \
-    xlwt==1.3.* \
-    zeep==4.1.0
-
-pip install wheel --no-cache-dir
+pip install --upgrade modoboa
 
 # Deactivate the virtual environment
 deactivate
 
+sudo nano /etc/nginx/sites-enabled/mail.conf
 
-pip install --upgrade modoboa
+
+=====================================================================================================================================
+Manual Installation:
+
+If all else fails, you might need to manually download the source code of the problematic packages and attempt to build and install them manually. This gives you more control over the installation process and allows you to debug any issues that arise.
+If you continue to encounter problems after trying these steps, it might be helpful to provide more details about your environment (such as Python version, operating system, etc.) and the specific commands you're running so that I can offer more targeted assistance.
+
+sudo -u trend -i bash
+python3.10 -m venv modoboa_env
+source modoboa_env/bin/activate
+pip install --upgrade pip
+pip install modoboa==1.8.0
+cd modoboa
+> sudo python3 manage.py migrate
+> python3 manage.py collectstatic
+> python3 manage.py check --deploy

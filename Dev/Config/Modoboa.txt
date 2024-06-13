@@ -1,0 +1,79 @@
+#!/bin/bash
+echo -e "\n
+###############################################################################\n
+# ############################################################################ #\n
+# #                                                                          # #\n
+# # ########  #####    ######  ###     ##  #####            #####      ##### # #\n
+# #    ##     ##  ##   ##      ## #    ##  ##  ###         ### ###      # #  # #\n
+# #    ##     ######   ## ##   ##  #   ##  ##   ###       ###   ###     # #  # #\n
+# #    ##     ##  ##   ## ##   ##   #  ##  ##   ###      ###########    # #  # #\n
+# #    ##     ##   ##  ##      ##    # ##  ##  ###      ###       ###   # #  # #\n
+# #    ##     ##   ##  ######  ##     ###  #####       ####       #### ##### # #\n
+# #                                                                          # #\n
+# ############################################################################ #\n
+################################################################################
+"
+# Script for installing Odoo 17.0 on Ubuntu 24.04
+# Author: AHMED OUF
+#-------------------------------------------------------------------------------
+# This script will install Odoo on your Ubuntu server. It can install multiple Odoo instances
+# in one Ubuntu because of the different xmlrpc_ports
+#-------------------------------------------------------------------------------
+# Do Not Forget to  Change xmlrpc_port
+# sudo adduser modoboa
+# Name: Modoboa mail installation User
+# sudo usermod -aG sudo modoboa
+# sudo su modoboa
+# cd
+# sudo nano modoboa_install.sh
+# Place this content in it and then make the file executable:
+# sudo chmod +x modoboa_install.sh
+# Execute the script to install Odoo 17.0:
+# ./modoboa_install.sh
+################################################################################
+
+# Update system
+sudo apt update
+
+# Install dependencies
+sudo apt install -y python3-pip python3-dev libpq-dev libffi-dev nginx
+
+# Install Modoboa
+sudo pip3 install modoboa
+
+# Set up domain alias
+modoboa-admin domain_alias --create trend-ai.net --alias mail.trend-ai.net
+
+# Create email account
+modoboa-admin user --create admin@trend-ai.net
+
+# Configure NGINX
+sudo tee /etc/nginx/sites-available/modoboa <<EOF
+server {
+    listen 80;
+    server_name mail.trend-ai.net;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+
+EOF
+
+# Enable the site
+sudo ln -s /etc/nginx/sites-available/modoboa /etc/nginx/sites-enabled/
+
+# Test NGINX configuration
+sudo nginx -t
+
+# Restart NGINX
+sudo systemctl restart nginx
+
+# Obtain and install SSL certificate
+sudo certbot --nginx --agree-tos --redirect --non-interactive --domains mail.trend-ai.net
+
+echo "Setup complete."

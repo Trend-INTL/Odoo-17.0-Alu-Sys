@@ -3,7 +3,7 @@ sudo nano /etc/nginx/sites-available/mail.conf
 ##################################################################
 #odoo 17.0 server
 upstream mail {
-server 127.0.0.1:4096;
+server 127.0.0.1:8096;
 }
 upstream mailchat {
 server 127.0.0.1:8072;
