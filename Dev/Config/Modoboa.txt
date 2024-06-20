@@ -20,7 +20,7 @@ echo -e "\n
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
 # Do Not Forget to  Change xmlrpc_port
-# modoboa@195.35.28.250
+# odoo17@195.35.28.250
 # sudo adduser modoboa
 # Name: Modoboa mail installation User
 # sudo usermod -aG sudo modoboa
