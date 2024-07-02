@@ -20,10 +20,6 @@ echo -e "\n
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
 # Do Not Forget to  Change xmlrpc_port
-# sudo adduser trend
-# Name: Odoo 17.0 trend installation User
-# sudo usermod -aG sudo trend
-# sudo su trend
 # cd
 # sudo nano trend_install.sh
 # Place this content in it and then make the file executable:
